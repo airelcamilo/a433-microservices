@@ -1,0 +1,29 @@
+# Menggunakan Docker Compose versi 2
+version: "3.7"
+
+services:
+  item-app:
+    # Menggunakan image item-app v1
+    image: airelcamilo/item-app:v1
+    # Port mapping agar dapat diakses dari port 80 di host
+    ports:
+      - 80:8080
+    # Menentukan working directory /app
+    working_dir: /app
+    # Hanya dapat berjalan setelah item-db diluncurkan
+    depends_on:
+      - item-db
+    # Menerapkan restart policy untuk selalu restart
+    restart: always
+
+  item-db:
+    # Menggunakan image mongo db
+    image: mongo:3
+    # Menentukan volume
+    volumes:
+      - app-db:/data/db
+    # Menerapkan restart policy untuk selalu restart
+    restart: always
+
+volumes:
+  app-db:
